@@ -1,6 +1,6 @@
 int vertexSize = 4;
 int driftLength = 50;
-float randomFluxAmount = 1;
+float randomFluxAmount = 0;
 
 class Vertex {
   PVector centerLocation;
@@ -52,6 +52,11 @@ class Edge {
     v1 = tempV1;
     v2 = tempV2;
   }
+  
+  void display(){
+    stroke(255.0);
+    line(v1.location.x, v1.location.y, v2.location.x, v2.location.y);
+  }
 }
 
 Vertex[] vertices;
@@ -59,9 +64,13 @@ Edge[] edges;
 
 void setup(){
   size(600, 600);
-  vertices = new Vertex[1];
+  vertices = new Vertex[2];
+  edges = new Edge[vertices.length - 1];
   vertices[0] = new Vertex(width/2, height/2);
+  vertices[1] = new Vertex((width/2)+50, (height/2)+50);
+  edges[0] = new Edge(vertices[0], vertices[1]);
   frameRate(10);
+  smooth();
 }
 
 void draw(){
@@ -69,5 +78,8 @@ void draw(){
   for(Vertex vertex: vertices){
     vertex.update();
     vertex.display();
+  }
+  for(Edge edge: edges){
+    edge.display();
   }
 }
