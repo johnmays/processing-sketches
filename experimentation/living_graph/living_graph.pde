@@ -1,5 +1,5 @@
 int vertexSize = 4;
-int driftLength = 50;
+int driftRadius = 50;
 float randomFluxAmount = 0;
 
 class Vertex {
@@ -9,38 +9,25 @@ class Vertex {
   float driftSpeed;
   Vertex(int centerX, int centerY){
     centerLocation = new PVector(centerX, centerY);
-    location = new PVector(centerX + random(-driftLength, driftLength), centerY + random(-driftLength, driftLength));
-    velocity = new PVector(random(0.3, 1), random(0.3, 1));
-    driftSpeed = random(0.1,0.8);
+    location = new PVector(centerLocation.x + random(-driftRadius, driftRadius)/2.0, centerLocation.y + random(-driftRadius, driftRadius)/2.0);
+    velocity = PVector.random2D();
+    driftSpeed = random(0.3,0.9);
   }
   
   void display(){
-    fill(255.0);
+    //stroke(255); fill(0,0,0,0); ellipse(centerLocation.x, centerLocation.y, driftRadius*2, driftRadius*2);
+    noStroke(); fill(255.0);
     ellipse(location.x, location.y, vertexSize, vertexSize);
+    
   }
   
   void update(){
-    //random fluctuations in direction:
-    if(random(0,1)>0.98){
-      if(random(0,1)>0.5){
-        location.x += randomFluxAmount;
-      }else{
-        location.x += -randomFluxAmount;
-      }
-      if(random(0,1)>0.5){
-        location.y += randomFluxAmount;
-      }else{
-        location.y += -randomFluxAmount;
-      }
+    PVector centerVector = location.copy().sub(centerLocation);
+    float distanceFromCenter = centerVector.mag();
+    if(distanceFromCenter >= driftRadius){
+      velocity = centerVector.div(-distanceFromCenter);
     }
-    
-    if(abs(centerLocation.x-location.x)>=driftLength){
-      velocity.x *= -1;
-    }
-    if(abs(centerLocation.y-location.y)>=driftLength){
-      velocity.y *= -1;
-    }
-    location.add(velocity);
+    location.add(velocity.copy().mult(driftSpeed));
   }
   
 }
@@ -64,11 +51,22 @@ Edge[] edges;
 
 void setup(){
   size(600, 600);
-  vertices = new Vertex[2];
+  vertices = new Vertex[25];
   edges = new Edge[vertices.length - 1];
-  vertices[0] = new Vertex(width/2, height/2);
-  vertices[1] = new Vertex((width/2)+50, (height/2)+50);
-  edges[0] = new Edge(vertices[0], vertices[1]);
+  int vIndex = 0;
+  for(int y = 0; y < height; y++){
+    for(int x = 0; x < width; x++){
+      if(x != 0 && y != 0 && x != width-1 && y != height-1){
+        if(x%100==0 & y%100==0){
+          vertices[vIndex] = new Vertex(x, y);
+          vIndex++;
+        }
+      }
+    }
+  }
+  //vertices[0] = new Vertex(width/2, height/2);
+  //vertices[1] = new Vertex((width/2)+50, (height/2)+50);
+  //edges[0] = new Edge(vertices[0], vertices[1]);
   frameRate(10);
   smooth();
 }
@@ -79,7 +77,7 @@ void draw(){
     vertex.update();
     vertex.display();
   }
-  for(Edge edge: edges){
-    edge.display();
-  }
+  //for(Edge edge: edges){
+  //  edge.display();
+  //}
 }
