@@ -1,7 +1,7 @@
 // PImage img;
 
-//String[] charArray = {"λ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"};
-String[] charArray = {"T", "A", "S", "S", "O"};
+String[] charArray = {"λ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"};
+//String[] charArray = {"T", "A", "S", "S", "O"};
 int margin = 36;
 int space = 36;
 color[] blues = {#00ffdf, #7dfffc, #009fff};
