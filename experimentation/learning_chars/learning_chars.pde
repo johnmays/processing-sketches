@@ -1,4 +1,4 @@
-PImage img;
+// PImage img;
 
 //String[] charArray = {"λ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"};
 String[] charArray = {"T", "A", "S", "S", "O"};
