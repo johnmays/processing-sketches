@@ -2,8 +2,9 @@ PImage img;
 int xSpace = 8;
 int ySpace = 12;
 int pixelDensity = 2;
+int perturbation = 17;
 
-char[][] glyphs = {{' '}, {')', '(', '*', ';', ':', '/', '<', '~'}, {'{', '}', 'X', 'S'}, {'I', 'P', 'T'}, {'9', 'M', 'K', 'Q'}, {'8', '?', '@'}};
+char[][] glyphs = {{' '}, {')', '(', '*', ';', ':', '/', '<', '~'}, {'{', '}', 'O', 'S'}, {'X', 'I', 'P', 'T'}, {'9', 'M', 'K', 'Q', '?'}, {'8', '@'}};
 //char[] glyphs = {' ', '░', '▒', '▓'};
 void setup(){
   size(400, 400);
@@ -58,25 +59,36 @@ void setup(){
     }
   }
   loadPixels();
-  //println(maxBrightness);
-  //println(minBrightness);
   for(int x = 0; x < width; x+= xSpace){
     for(int y = 0; y < height; y+= ySpace){
-      //int index = index(x*pixelDensity, y*pixelDensity);
       int index = canvasIndex(x*pixelDensity, y*pixelDensity);
       color currentPixel = pixels[index];
-      //color currentPixel = get(x, y);
       int gray = int(red(currentPixel));
       gray = int((gray - minBrightness)*(255 / (maxBrightness - minBrightness)));
       fill(gray);
       rect(x, y, xSpace, ySpace);
-      //fill(255);
-      //rect(x, y, 2, 2);
     }
   }
-  //println(pixels.length);
-  //println(img.pixels.length);
   loadPixels();
+}
+
+void draw(){
+  delay(100);
+  background(0);
+  fill(255);
+  for(int x = 0; x < width; x+= xSpace){
+    for(int y = 0; y < height; y+= ySpace){
+      int index = canvasIndex(x*pixelDensity, y*pixelDensity);
+      color currentPixel = pixels[index];
+      int gray = int(red(currentPixel));
+      if(gray - perturbation >= 0 && gray + perturbation <= 255){
+        gray += random(-perturbation, perturbation);
+      }
+      int charIndexI = int((glyphs.length/255.0)*gray);
+      int charIndexJ = int(random(0, glyphs[charIndexI].length));
+      text(glyphs[charIndexI][charIndexJ], x, y);
+    }
+  }
 }
 
 int index(int x, int y){
