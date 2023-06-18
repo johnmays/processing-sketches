@@ -7,6 +7,8 @@ const nodes = [];
 
 class Node {
   constructor(){
+    initalPosition = createVector(40,40);
+    //this.position = initialPosition;
     this.initX = random(width);
     this.initY = random(height);
     this.x = this.initX;
@@ -24,6 +26,13 @@ class Node {
   display() {
     ellipse(this.x, this.y, this.diameter, this.diameter);
     console.log("foo");
+  }
+}
+
+class Edge {
+  constructor(nodeOne, nodeTwo){
+    this.nodeOne = nodeOne;
+    this.nodeTwo = nodeTwo;
   }
 }
 
