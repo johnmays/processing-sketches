@@ -1,7 +1,9 @@
-var movementRange = 30;
-var nodeOne;
+const movementRange = 15;
+const frameLength = 1.0/30.0;
+const numNodes = 50;
 var time = 0.0;
-var frameLength = 1.0/30.0;
+
+const nodes = [];
 
 class Node {
   constructor(){
@@ -10,8 +12,8 @@ class Node {
     this.x = this.initX;
     this.y = this.initY;
     this.diameter = 5;
-    this.hFreq = random(0.01,0.1);
-    this.vFreq = random(0.01,0.1);
+    this.hFreq = random(-0.1,0.1);
+    this.vFreq = random(-0.1,0.1);
   }
   
   move(time) {
@@ -29,13 +31,18 @@ function setup() {
   createCanvas(720, 400);
   stroke(255);
   frameRate(30);
-  nodeOne = new Node();
-  nodeOne.display();
+  // create all nodes:
+  for(var i = 0; i < numNodes; i++){
+    nodes[i] = new Node();
+    nodes[i].display();
+  }
 }
 
 function draw() {
   background(0); // Set the background to black
   time = time + frameLength;
-  nodeOne.move(time);
-  nodeOne.display();
+  for(var i = 0; i < numNodes; i++){
+    nodes[i].move(time);
+    nodes[i].display();
+  }
 }
